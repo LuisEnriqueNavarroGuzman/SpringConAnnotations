@@ -1,0 +1,181 @@
+TEMARIO
+¿Qué es Spring?
+Preparación Eclipse para Spring
+Inversión de control y configuración XML
+Inyección de dependencias
+Alcance y ciclo de vida de los beans
+Configuración con java annotations
+Configuración con código Java
+Aplicaciones web con Spring con MVC
+
+Ventajas de Spring
+    -Inyección de dependencias(favorece el "loose coupling")
+    -Desarrollo sencillo con POJOS(Plain Old Java Objects)
+    -Minimiza el código repetitivo(boilerplate code)
+    -simplifica el acceso a datos
+    -Programación Orientada a Aspectos(AOP)
+
+Estructura de Core (núcleo) de spring
+
+        -Infraestructura
+        -Acceso a datos
+Core    -Contenedor central
+        -Web/MVC
+        -Pruebas
+
+Documentación
+https://spring.io/
+
+Software
+https://www.oracle.com/mx/java/technologies/javase/javase8-archive-downloads.html
+https://tomcat.apache.org/download-90.cgi
+
+
+Librerias por zip
+https://repo.spring.io/ui/native/release/org/springframework/spring/5.1.4.RELEASE/
+
+Principales caracteristicas de spring
+
+Inversion of control: 
+Invierte el flujo de control del programa,
+externalizando(agente externo: framework)
+la contrucción y manejo de objetos.
+
+- Proporciona modularidad
+- Permite ampliar la funcionalidad de nuestras aplicaciones sin modificar las clases
+- Evita la dependencia entre las clases
+- Flexibiliza nuestras aplicaciones haciéndolas más configurables
+
+                                Archivo de configuración XML
+Archivo de configuración =>     Java Source code
+                                Java annotations 
+
+Inyección de dependencias:
+Patron de diseño orientado a objetos en el que
+se suministran objetos a una clase en lugar de
+ser la propia clase la que cree dichos objetos.
+
+Formas para crear Inyección de dependencias
+
+Muchas formas. 2 fundamentales:
+1. Mediante un constructor
+2. Mediante un setter
+
+Pasos a seguir mediante un constructor
+1.Crear la clase e interfaz de la dependencia(informes)
+2.Creación de constructor en la clase para la Inyección de la dependencia
+3.Configurar la Inyección de dependencia en el archivo XML(ApplicationContext.xml)
+
+ Pasos a seguir utilizando un setter
+ 1.Crear la clase e interfaz de la dependencia(informes)
+ 2.Creación del método setter en la clase para la Inyección
+3.Configurar la inyección de dependencia en el archivo XML(ApplicationContext)
+
+Singleton 
+¿Qué es?
+Patrón de diseño que tiene como objetivo asegurar que solo hay una instancia u objeto
+por clase y un punto de acceso global ella.
+
+¿Por qué necesitamos esto?
+Ecenarios donde se necesita acceder a un unico recurso global
+
+Ventajas
+1.Control estricto de cómo se acceden a las instancias
+2.Espacio de nombres reducido(mayor claridad de código)
+3.Mejor desempeño de la herencia
+
+#Spring utiliza Singleton por defecto
+
+Prototype 
+¿Qué es?
+Patrón de diseño que tiene como objetivo la creación de varios
+objetos a partir de un modelo o prototipo. Esto lo hace mediante
+la clonación de objetos o instancia creadas previamente. Siempre
+es mas óptimo (recursos) clonar un objeto que crear uno nuevo.
+El objeto clonado tendrá sus propios valores desde setters.
+
+¿Por qué necesitamos esto?
+En determinados escenarios que surgen a la hora de programar se 
+necesitan varios objetos con atributos repetidos (comunes)
+
+Ventajas
+1.Una aplicación puede crear y eliminar objetos en tiempo de ejecución(esto no lo permiten otros patrones de diseño) 
+2.Permite crear nuevos objetos variando los ya existentes con el ahorro de tiempo y recursos
+3.Clonar siempre es más rapido que crear
+
+Ciclo de vida de un bean
+-Ejecutar tareas a realizar antes de creación de Bean 
+-Ejecutar tareas a realizar después de creación de Bean
+
+================================== Ciclo de vida ==================================
+        Contenedor Spring iniciado => Instanciación de Bean  => 
+        Inyección de dependencias  => Procesado del Bean     =>
+        Método Init                => Bean listo para su uso => 
+        Contenedor Spring apagado  => Método destroy
+
+Propositos
+
+método Init:
+-Cargar dependencias de otros beans
+-Activación retardada de servicios
+-Etc
+
+método destroy:
+-Liberar recursos
+-Cerrar conexiones con BBDD
+-Etc
+
+Java annotations
+¿Qué son?
+Las java annotations son "etiquetas" que se añaden a nuestras clases,
+métodos, campos, variables etc en un programa java.
+¿para qué sirven?
+para añadir metadatos a nuestros programas (clases) de java
+¿Qué son los metadatos?
+Un conjunto de datos que describen el contenido y/o propósito de un objeto
+
+#Poder describir la naturaleza de un objeto (metadatos) con annotations nos permite 
+utilizarlas como sustituto de los archivos XML
+
+Las annotations  son procesadas en tiempo de compilación o también en tiempo de ejecución.
+
+¿Cómo funcionan las annotations en Spring?
+Spring escanea el código de todas nuestras clases en busca de annotations.
+-Hay que preparar el XML para que Spring escanee nuestro código
+Cuando encuentra una annotation, registra el bean de forma automática en el
+contenedor.
+
+Ventajas
+Mayor facilidad a la hora de configurar los beans.
+Simplifica enormemente el código del archivo de configuración XML.
+Especialmente útil cuando debemos configurar cientos de beans en un programa.
+
+Pasos a seguir para utilizar annotations
+1.Preparar el XML para que spring escanee nuestr código (clases)
+2.Agregar annotation a nuestras clases de java
+3.Pedir el bean al contenedor
+
+annotations
+@Component("ComercialExperimentado"): registra un bean dentro del framework sin mayor efecto(si no se agrega el id toma el nombre de la clase con la primera letra en minuscula)
+@Autowired: permite inyectar unas dependencias con otras dentro de Spring 
+@Qualifier: Especificar bean Id cuando sea necesario
+@Scope("prototype"): especifica el patron de diseño a utilizar "Singleton o Prototype"
+@PostConstruct: indica el metodo que se ejecuta después de inicializar un Bean
+@PreDestroy: indica el metodo que se ejecuta cuando la instancia del bean se elimina del contexto
+@Configuration: Cómo configurar Spring con código java prescindiendo de XML.
+@ComponentScan("es.pildoras.pruebaannotations"): Esta anotación se usa con la anotación @Configuration para permitir que Spring conozca los paquetes para buscar componentes anotados
+@Bean: La anotación @Bean funciona con @Configuration para crear beans Spring
+@PropertySource: permite especificar la ruta del archivo externo de propiedades
+@Value: permite inyectar el valor de las propiedades desde archivo externo
+
+MVC
+
+modelo: BD
+vista: Servlet
+controlador: JSP
+
+Vetajas:
+Favorece el desarrollo
+Favorece el mantenimiento
+Favorece la depuración 
+Favorece la escalabilidad
